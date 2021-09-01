@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/background_item"
+    android:maxHeight="150dp"
+    >
+
+    <TextView
+        android:id="@+id/text_titulo_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLength="30"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Titulo grande para teste" />
+
+    <TextView
+        android:id="@+id/text_descricao_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:maxLength="100"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_titulo_item"
+        tools:text="Descricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla bla" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
