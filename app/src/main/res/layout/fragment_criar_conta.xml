@@ -18,7 +18,7 @@
         android:textColor="@color/black"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/criar_conta_fragment_input_usuario"
+        android:id="@+id/criar_conta_fragment_input_nome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,11 +26,11 @@
         app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_text_criar_conta">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/criar_conta_fragment_edit_usuario"
+            android:id="@+id/criar_conta_fragment_edit_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
-            android:hint="Usuário"
+            android:hint="Nome"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -42,8 +42,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_usuario">
+        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_nome">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/criar_conta_fragment_edit_senha"
@@ -51,6 +52,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:hint="Senha"
+            android:inputType="textPassword"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -71,6 +73,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:hint="Confirmar senha"
+            android:inputType="textPassword"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -91,6 +94,8 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:hint="CPF"
+            android:maxLength="11"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -111,6 +116,8 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:hint="Data de nascimento"
+            android:maxLength="10"
+            android:inputType="date"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -121,11 +128,9 @@
         android:id="@+id/criar_conta_fragment_input_telefone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_nascimento"
-        app:passwordToggleEnabled="true">
+        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_nascimento">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/criar_conta_fragment_edit_telefone"

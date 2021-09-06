@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:layout_margin="5dp"
-    android:background="@drawable/background_item"
-    android:maxHeight="150dp"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
     >
 
-    <TextView
-        android:id="@+id/text_titulo_item"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLength="30"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Titulo grande para teste" />
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/text_descricao_item"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:maxLength="100"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_titulo_item"
-        tools:text="Descricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla bla" />
+        <ImageView
+            android:id="@+id/image_status_item"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            tools:src="@color/green"
+            app:layout_constraintBottom_toTopOf="@id/text_titulo_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/text_titulo_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:ellipsize="end"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_status_item"
+            tools:text="Titulo grande para teste com reticencias" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_descricao_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLength="300"
+            android:maxLines="3"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/text_titulo_item"
+            app:layout_constraintStart_toStartOf="@id/text_titulo_item"
+            app:layout_constraintTop_toBottomOf="@id/text_titulo_item"
+            tools:text="Descricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla blaDescricao longa para teste bla bla bla" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
