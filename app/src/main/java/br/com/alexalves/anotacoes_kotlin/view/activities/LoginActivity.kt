@@ -25,11 +25,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun iniciaApp() {
-        trocarFragment(SplashFragment())
-        CoroutineScope(Main).launch {
-            delay(2000L)
+        if (intent.hasExtra("appRun")){
             trocarFragment(LoginFragment())
+        } else {
+            trocarFragment(SplashFragment())
+            CoroutineScope(Main).launch {
+                delay(2000L)
+                trocarFragment(LoginFragment())
+            }
         }
+
     }
 
     fun trocarFragment(fragment: Fragment) {

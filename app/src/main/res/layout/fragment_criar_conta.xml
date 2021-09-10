@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="40dp">
+    android:paddingStart="30dp"
+    android:paddingTop="50dp"
+    android:paddingEnd="30dp"
+    android:paddingBottom="60dp">
 
     <TextView
         android:id="@+id/criar_conta_fragment_text_criar_conta"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
         android:text="Criar conta"
-        android:textSize="50sp"
+        android:textColor="@color/black"
+        android:textSize="40sp"
         android:textStyle="bold"
-        android:textColor="@color/black"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/criar_conta_fragment_input_nome"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,10 +45,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/criar_conta_fragment_input_senha"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_nome">
 
@@ -61,7 +68,9 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/criar_conta_fragment_input_confirmar_senha"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,43 +90,22 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/criar_conta_fragment_input_cpf"
+        android:id="@+id/criar_conta_fragment_input_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_confirmar_senha">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/criar_conta_fragment_edit_cpf"
+            android:id="@+id/criar_conta_fragment_edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
-            android:hint="CPF"
-            android:maxLength="11"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:textColorHint="@color/white"
-            android:textSize="20sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/criar_conta_fragment_input_nascimento"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_cpf">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/criar_conta_fragment_edit_nascimento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
-            android:hint="Data de nascimento"
-            android:maxLength="10"
-            android:inputType="date"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -126,11 +114,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/criar_conta_fragment_input_telefone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_nascimento">
+        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/criar_conta_fragment_edit_telefone"
@@ -138,7 +128,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:hint="Telefone"
-            android:inputType="textPassword"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/white"
             android:textSize="20sp" />
@@ -155,6 +145,6 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/criar_conta_fragment_input_telefone" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

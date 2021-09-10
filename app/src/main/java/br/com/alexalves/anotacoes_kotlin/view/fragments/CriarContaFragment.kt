@@ -1,38 +1,102 @@
-package br.com.alexalves.anotacoes_kotlin.view.fragments
+package br.com.alexalves.anotacoes_kotlin.viewInflated.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import br.com.alexalves.anotacoes_kotlin.R
-import br.com.alexalves.anotacoes_kotlin.database.UsuarioDAO
+import br.com.alexalves.anotacoes_kotlin.model.Usuario
+import br.com.alexalves.anotacoes_kotlin.view.fragments.LoginFragment
 import br.com.alexalves.anotacoes_kotlin.viewmodel.CriarContaViewModel
 import com.google.android.material.textfield.TextInputLayout
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CriarContaFragment : Fragment() {
 
-    private val criarContaViewModel by inject<CriarContaViewModel>()
+    private lateinit var viewInflated: View
+    private lateinit var emailNovoUsuario: String
+    private val criarContaViewModel: CriarContaViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_criar_conta, container, false)
+    ): View {
 
-        verificaNome(view)
-        verificaSenha(view)
-        verificaConfirmarSenha(view)
-        verificaCpf(view)
-        verificaDataNascimento(view)
+        viewInflated = inflater.inflate(R.layout.fragment_criar_conta, container, false)
 
-        return view
+        verificaNome()
+        verificaSenha()
+        verificaConfirmarSenha()
+        configuraObserverNovaConta()
+        configuraButtonCriarConta()
+
+        return viewInflated
     }
 
-    private fun verificaNome(view: View) {
-        val textInputNome = view.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome)
+    private fun configuraObserverNovaConta() {
+        criarContaViewModel.emailUsuarioRecentementeCriado.observe(viewLifecycleOwner, Observer { email ->
+            if (email.equals(emailNovoUsuario)){
+                activity?.supportFragmentManager?.let {
+                    it.beginTransaction()
+                        .replace(R.id.login_fragment_container, LoginFragment(), null)
+                        .commit()
+                }
+            } else if(email.equals("erro")){
+                Toast.makeText(context, "Já existe uma conta com esse email", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private fun configuraButtonCriarConta() {
+        val buttonCriarConta =
+            viewInflated.findViewById<Button>(R.id.button_criar_conta_fragment_criar_conta)
+        buttonCriarConta.setOnClickListener {
+            if (!verificaErrosNovoUsuario()) {
+                buscaUsuario() { usuario ->
+                    run {
+                        criarContaViewModel.criarUsuario(usuario)
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun buscaUsuario(usuarioRetornado: (usuario: Usuario) -> Unit) {
+        val nome =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome).editText?.text.toString()
+        val senha =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha).editText?.text.toString()
+        emailNovoUsuario =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_email).editText?.text.toString()
+        val telefone =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_telefone).editText?.text.toString()
+        val usuario = Usuario(nome, senha, emailNovoUsuario, telefone)
+        usuarioRetornado(usuario)
+    }
+
+    private fun verificaErrosNovoUsuario(): Boolean {
+        val errorNome =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome).isErrorEnabled
+        val errorSenha =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha).isErrorEnabled
+        val errorConfirmarSenha =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_confirmar_senha).isErrorEnabled
+        val errorEmail =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_email).isErrorEnabled
+        val errorTelefone =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_telefone).isErrorEnabled
+        return (errorNome || errorSenha || errorConfirmarSenha || errorEmail || errorTelefone)
+    }
+
+    private fun verificaNome() {
+        val textInputNome =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome)
         textInputNome.editText?.setOnFocusChangeListener { v, hasFocus ->
             onFocusChangeNome(
                 hasFocus,
@@ -41,9 +105,9 @@ class CriarContaFragment : Fragment() {
         }
     }
 
-    private fun verificaSenha(view: View) {
+    private fun verificaSenha() {
         val textInputSenha =
-            view.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
         textInputSenha.editText?.setOnFocusChangeListener { v, hasFocus ->
             onFocusChangeSenha(
                 hasFocus,
@@ -52,11 +116,11 @@ class CriarContaFragment : Fragment() {
         }
     }
 
-    private fun verificaConfirmarSenha(
-        view: View
-    ) {
-        val textInputSenha = view.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
-        val textInputConfirmarSenha = view.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_confirmar_senha)
+    private fun verificaConfirmarSenha() {
+        val textInputSenha =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
+        val textInputConfirmarSenha =
+            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_confirmar_senha)
         textInputConfirmarSenha.editText?.setOnFocusChangeListener { v, hasFocus ->
             onFocusChangeConfirmarSenha(
                 hasFocus,
@@ -64,31 +128,6 @@ class CriarContaFragment : Fragment() {
                 textInputSenha
             )
         }
-    }
-
-    private fun verificaCpf(view: View) {
-        val textInputCpf = view.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_cpf)
-        textInputCpf.editText?.setOnFocusChangeListener { v, hasFocus ->
-            onFocusChangeCpf(
-                hasFocus,
-                textInputCpf
-            )
-        }
-    }
-
-    private fun verificaDataNascimento(view: View) {
-        val textInputDataNascimento =
-            view.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nascimento)
-        textInputDataNascimento.editText?.setOnFocusChangeListener { v, hasFocus ->
-            onFocusChangeDataNascimento(
-                hasFocus,
-                textInputDataNascimento
-            )
-        }
-    }
-
-    private fun onFocusChangeCpf(hasFocus: Boolean, textInputCpf: TextInputLayout?) {
-
     }
 
     private fun onFocusChangeConfirmarSenha(
@@ -147,27 +186,4 @@ class CriarContaFragment : Fragment() {
             }
         }
     }
-
-    private fun onFocusChangeDataNascimento(
-        hasFocus: Boolean,
-        textInput: TextInputLayout
-    ) {
-        val texto = textInput.editText?.text.toString()
-        if (!hasFocus) {
-            if (texto.isNullOrBlank()) {
-                textInput.error = "A data de nascimento não pode estar vazia"
-                textInput.isErrorEnabled = true
-            } else if (!(texto.length == 10)) {
-                textInput.error = "O formato da data deve ser 'dd/mm/yyyy'"
-                textInput.isErrorEnabled = true
-            } else if (
-                !(texto[2].equals("/")) ||
-                !(texto[5].equals("/"))
-            ) {
-                textInput.error = "A data deve ser separada por '/'"
-                textInput.isErrorEnabled = true
-            } else textInput.isErrorEnabled = false
-        }
-    }
-
 }

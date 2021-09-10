@@ -6,4 +6,5 @@
     <string name="image_user">Imagem de uma silhueta de pessoa</string>
     <string name="button_edit_cadastro">Button para editar dados cadastrais</string>
     <string name="text_button_logout">Sair da conta</string>
+    <string name="usuarioEmailArgument">usuarioEmailLogado</string>
 </resources>
