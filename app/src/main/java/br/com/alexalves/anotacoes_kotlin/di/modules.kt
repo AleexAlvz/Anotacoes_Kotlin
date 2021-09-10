@@ -43,6 +43,9 @@ val appModules = module {
     viewModel {
         AnotacoesViewModel(get<AnotacaoDAO>())
     }
+    viewModel {
+        DetalheAnotacaoViewModel(get<AnotacaoDAO>())
+    }
 
 
 }

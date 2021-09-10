@@ -1,38 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="30dp"
     android:paddingTop="50dp"
     android:paddingEnd="30dp"
     android:paddingBottom="60dp">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/fragment_detalhe_text_input_titulo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        tools:text="Titulo"
+        android:gravity="start"
         android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        tools:text="Titulo" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/fragment_detalhe_text_input_descricao"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        tools:text="Titulo"
-        android:textColor="@color/black"
-        android:textSize="40sp"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:textColor="@color/grey"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_detalhe_text_input_titulo"
+        tools:text="Descricao" />
+
+    <TextView
+        android:id="@+id/fragment_detalhe_text_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:text="Data de criação:"
+        android:textColor="@color/grey"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@id/fragment_detalhe_text_input_data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_detalhe_text_input_descricao" />
+
+    <TextView
+        android:id="@+id/fragment_detalhe_text_input_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fragment_detalhe_text_data"
+        app:layout_constraintTop_toTopOf="@id/fragment_detalhe_text_data"
+        tools:text="16/01/2021" />
+
+    <TextView
+        android:id="@+id/fragment_detalhe_text_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: "
+        android:layout_marginTop="16dp"
+        android:textColor="@color/grey"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@id/fragment_detalhe_text_input_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_detalhe_text_data" />
+
+    <TextView
+        android:id="@+id/fragment_detalhe_text_input_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PENDENTE"
+        android:textColor="@color/grey"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@id/fragment_detalhe_text_status"
+        app:layout_constraintTop_toTopOf="@id/fragment_detalhe_text_status"
         />
 
 

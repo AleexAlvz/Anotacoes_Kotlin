@@ -20,11 +20,17 @@ class DetalhesAnotacaoActivity: AppCompatActivity() {
     private fun configuraDetalhesAnotacao() {
         anotacaoId = intent.getLongExtra(getString(R.string.anotacaoIdArgument), 0L).toString()
 
+
         trocarFragment(anotacaoId, DetalheAnotacaoFragment())
 
     }
 
     private fun trocarFragment(anotacaoId: String, fragment: Fragment) {
+
+        val bundle = Bundle()
+        bundle.putString(getString(R.string.anotacaoIdArgument), anotacaoId)
+        fragment.arguments = bundle
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.detalhe_anotacao_fragment_container, fragment, null)
             .commit()
