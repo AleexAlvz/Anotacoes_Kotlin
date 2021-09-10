@@ -26,15 +26,9 @@ class CriarContaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         viewInflated = inflater.inflate(R.layout.fragment_criar_conta, container, false)
-
-        verificaNome()
-        verificaSenha()
-        verificaConfirmarSenha()
         configuraObserverNovaConta()
         configuraButtonCriarConta()
-
         return viewInflated
     }
 
@@ -56,7 +50,7 @@ class CriarContaFragment : Fragment() {
         val buttonCriarConta =
             viewInflated.findViewById<Button>(R.id.button_criar_conta_fragment_criar_conta)
         buttonCriarConta.setOnClickListener {
-            if (!verificaErrosNovoUsuario()) {
+            if (validaNovoUsuario()) {
                 buscaUsuario() { usuario ->
                     run {
                         criarContaViewModel.criarUsuario(usuario)
@@ -74,116 +68,114 @@ class CriarContaFragment : Fragment() {
             viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha).editText?.text.toString()
         emailNovoUsuario =
             viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_email).editText?.text.toString()
+
         val telefone =
             viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_telefone).editText?.text.toString()
-        val usuario = Usuario(nome, senha, emailNovoUsuario, telefone)
+
+        //Formata telefone para salvar
+        val telefoneFormatado = "(${telefone.subSequence(0,2)}) ${telefone.subSequence(2,7)}-${telefone.subSequence(7,11)}"
+
+        val usuario = Usuario(nome, senha, emailNovoUsuario, telefoneFormatado)
         usuarioRetornado(usuario)
     }
 
+    private fun validaNovoUsuario(): Boolean {
+        validaCamposNovoUsuario()
+        val temErros = verificaErrosNovoUsuario()
+        return !temErros
+    }
+
     private fun verificaErrosNovoUsuario(): Boolean {
-        val errorNome =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome).isErrorEnabled
-        val errorSenha =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha).isErrorEnabled
-        val errorConfirmarSenha =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_confirmar_senha).isErrorEnabled
-        val errorEmail =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_email).isErrorEnabled
-        val errorTelefone =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_telefone).isErrorEnabled
+        val errorNome = temErro(R.id.criar_conta_fragment_input_nome)
+        val errorSenha = temErro(R.id.criar_conta_fragment_input_senha)
+        val errorConfirmarSenha = temErro(R.id.criar_conta_fragment_input_confirmar_senha)
+        val errorEmail = temErro(R.id.criar_conta_fragment_input_email)
+        val errorTelefone = temErro(R.id.criar_conta_fragment_input_telefone)
         return (errorNome || errorSenha || errorConfirmarSenha || errorEmail || errorTelefone)
     }
 
-    private fun verificaNome() {
-        val textInputNome =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome)
-        textInputNome.editText?.setOnFocusChangeListener { v, hasFocus ->
-            onFocusChangeNome(
-                hasFocus,
-                textInputNome
-            )
-        }
+    private fun validaCamposNovoUsuario() {
+        validaNome()
+        validaSenha()
+        validaConfirmarSenha()
+        validaEmail()
+        validaTelefone()
     }
 
-    private fun verificaSenha() {
-        val textInputSenha =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
-        textInputSenha.editText?.setOnFocusChangeListener { v, hasFocus ->
-            onFocusChangeSenha(
-                hasFocus,
-                textInputSenha
-            )
-        }
+    private fun validaNome() {
+        val inputNome = viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_nome)
+        val textoNome = inputNome.editText?.text.toString()
+        if (textoNome.isBlank()){
+            inputNome.error = "Campo obrigatório"
+            inputNome.isErrorEnabled = true
+        } else if (textoNome.length<3){
+            inputNome.error = "O nome deve ter pelo menos 3 caracteres"
+            inputNome.isErrorEnabled = true
+        } else if (textoNome.length>15){
+            inputNome.error = "O nome deve ter no máximo 15 caracteres"
+            inputNome.isErrorEnabled = true
+        } else inputNome.isErrorEnabled = false
     }
 
-    private fun verificaConfirmarSenha() {
-        val textInputSenha =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
-        val textInputConfirmarSenha =
-            viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_confirmar_senha)
-        textInputConfirmarSenha.editText?.setOnFocusChangeListener { v, hasFocus ->
-            onFocusChangeConfirmarSenha(
-                hasFocus,
-                textInputConfirmarSenha,
-                textInputSenha
-            )
-        }
+    private fun validaSenha() {
+        val inputSenha = viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha)
+        val textoSenha = inputSenha.editText?.text.toString()
+
+        if (textoSenha.isBlank()){
+            inputSenha.error = "Campo obrigatório"
+            inputSenha.isErrorEnabled = true
+        } else if (textoSenha.length<5){
+            inputSenha.error = "A senha deve ter pelo menos 5 caracteres"
+            inputSenha.isErrorEnabled = true
+        } else if (textoSenha.length>20){
+            inputSenha.error = "A senha deve ter no máximo 20 caracteres"
+            inputSenha.isErrorEnabled = true
+        } else inputSenha.isErrorEnabled = false
     }
 
-    private fun onFocusChangeConfirmarSenha(
-        hasFocus: Boolean,
-        textInputConfirmarSenha: TextInputLayout,
-        textInputSenha: TextInputLayout
-    ) {
-        val textoConfirmarSenha = textInputConfirmarSenha.editText?.text.toString()
-        val textoSenha = textInputSenha.editText?.text.toString()
+    private fun validaConfirmarSenha() {
+        val inputConfirmarSenha = viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_confirmar_senha)
+        val textoConfirmarSenha = inputConfirmarSenha.editText?.text.toString()
+        val textoSenha = viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_senha).editText?.text.toString()
 
-        if (!hasFocus) {
-            if (textoConfirmarSenha.length == 0) {
-                textInputConfirmarSenha.error = "A confirmação da senha não pode estar vazia"
-                textInputConfirmarSenha.isErrorEnabled = true
-            } else if (!textoConfirmarSenha.equals(textoSenha)) {
-                textInputConfirmarSenha.error = "A confirmação da senha difere do campo anterior"
-                textInputConfirmarSenha.isErrorEnabled = true
-            }
+        if (textoConfirmarSenha.isBlank()){
+            inputConfirmarSenha.error = "Campo obrigatório"
+            inputConfirmarSenha.isErrorEnabled = true
+        } else if (!textoConfirmarSenha.equals(textoSenha)){
+            inputConfirmarSenha.error = "A confirmação da senha deve ser a mesma que a senha"
+            inputConfirmarSenha.isErrorEnabled = true
+        } else inputConfirmarSenha.isErrorEnabled = false
+    }
+
+    private fun validaEmail() {
+        val inputEmail = viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_email)
+        val textoEmail = inputEmail.editText?.text.toString()
+
+        if (textoEmail.isBlank()){
+            inputEmail.error = "Campo obrigatório"
+            inputEmail.isErrorEnabled = true
+        } else if (!textoEmail.matches(Regex(".+@.+\\..+"))){
+            inputEmail.error = "Formato deve ser usuario@dominio.com"
+            inputEmail.isErrorEnabled = true
+        } else inputEmail.isErrorEnabled = false
+
+    }
+
+    private fun validaTelefone() {
+        val inputTelefone = viewInflated.findViewById<TextInputLayout>(R.id.criar_conta_fragment_input_telefone)
+        val textoTelefone = inputTelefone.editText?.text.toString()
+
+        if (textoTelefone.isBlank()){
+            inputTelefone.error = "Campo obrigatório"
+            inputTelefone.isErrorEnabled = true
+        } else if (textoTelefone.length!=11){
+            inputTelefone.error = "O telefone deve ter 11 digitos com DDD"
+            inputTelefone.isErrorEnabled = true
         } else {
-            textInputConfirmarSenha.isErrorEnabled = false
+            inputTelefone.isErrorEnabled = false
         }
     }
 
-    private fun onFocusChangeNome(
-        hasFocus: Boolean,
-        textInputNome: TextInputLayout
-    ) {
-        val texto = textInputNome.editText?.text.toString()
-        if (!hasFocus) {
-            if (texto.isNullOrBlank()) {
-                textInputNome.error = "O nome não pode estar vazio"
-                textInputNome.isErrorEnabled = true
-            }
-        } else {
-            textInputNome.isErrorEnabled = false
-        }
-    }
-
-    private fun onFocusChangeSenha(
-        hasFocus: Boolean,
-        textInput: TextInputLayout
-    ) {
-        val texto = textInput.editText?.text.toString()
-        if (!hasFocus) {
-            if (texto.length == 0) {
-                textInput.error = "A senha não pode estar vazia"
-                textInput.isErrorEnabled = true
-            } else if (texto.length < 5) {
-                textInput.error = "Senha deve ter pelo menos 5 algorismos"
-                textInput.isErrorEnabled = true
-            } else if (texto.length > 20) {
-                textInput.error = "Senha deve ter no máximo 20 algorismos"
-                textInput.isErrorEnabled = true
-            } else {
-                textInput.isErrorEnabled = false
-            }
-        }
-    }
+    private fun temErro(id: Int) =
+        viewInflated.findViewById<TextInputLayout>(id).isErrorEnabled
 }

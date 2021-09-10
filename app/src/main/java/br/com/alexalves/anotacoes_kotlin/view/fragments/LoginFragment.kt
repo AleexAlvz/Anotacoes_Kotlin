@@ -1,12 +1,14 @@
 package br.com.alexalves.anotacoes_kotlin.view.fragments
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,91 +23,63 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginFragment : Fragment() {
 
     private val loginViewModel: LoginViewModel by viewModel()
-
     private lateinit var inputTextEmail: TextInputLayout
     private lateinit var inputTextSenha: TextInputLayout
-    private lateinit var textEmail: String
-    private lateinit var textSenha: String
+    private lateinit var inflatedView: View
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-
-        configuraLoginFragment(view)
-
-        return view
+        inflatedView = inflater.inflate(R.layout.fragment_login, container, false)
+        configuraLoginFragment()
+        return inflatedView
     }
 
-    private fun configuraLoginFragment(view: View) {
-        configuraLoginClickListener(view)
-        configuraCriarContaClickListener(view)
-        configuraCampos(view)
+    private fun configuraLoginFragment() {
+        configuraLoginClickListener()
+        configuraCriarContaClickListener()
         configuraObserverLogin()
     }
 
-    private fun configuraCampos(view: View) {
-        inputTextEmail = view.findViewById(R.id.login_fragment_text_input_layout_email)
-        inputTextSenha = view.findViewById(R.id.login_fragment_text_input_layout_senha)
-        textEmail = inputTextEmail.editText?.text.toString()
-        textSenha = inputTextSenha.editText?.text.toString()
-
-        configuraFocusEmail()
-        configuraFocusSenha()
-
-    }
-
-    private fun configuraFocusEmail() {
-        inputTextEmail.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                if (inputTextEmail.editText?.text.toString().isBlank()) {
-                    inputTextEmail.error = "Email não pode ficar vazio"
-                    inputTextEmail.isErrorEnabled = true
-                } else {
-                    inputTextEmail.isErrorEnabled = false
-                }
-            }
-        })
-    }
-
-    private fun configuraFocusSenha() {
-        inputTextSenha.setOnFocusChangeListener(View.OnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                if (inputTextSenha.editText?.text.toString().isBlank()) {
-                    inputTextSenha.error = "Senha não pode ficar vazia"
-                    inputTextSenha.isErrorEnabled = true
-                } else {
-                    inputTextSenha.isErrorEnabled = false
-                }
-            }
-        })
-    }
-
-    private fun configuraLoginClickListener(view: View) {
-        val buttonLogin = view.findViewById<Button>(R.id.login_fragment_button_login)
+    private fun configuraLoginClickListener() {
+        val buttonLogin = inflatedView.findViewById<Button>(R.id.login_fragment_button_login)
         buttonLogin.setOnClickListener {
-            configuraCampos(view)
-            if (!(inputTextEmail.isErrorEnabled||inputTextSenha.isErrorEnabled)){
-                loginViewModel.buscaPorEmail(textEmail)
-            } else Toast.makeText(context, "Os campos devem ser corrigidos", Toast.LENGTH_LONG).show()
+
+            inputTextEmail = inflatedView.findViewById<TextInputLayout>(R.id.login_fragment_text_input_layout_email)
+            inputTextSenha = inflatedView.findViewById<TextInputLayout>(R.id.login_fragment_text_input_layout_senha)
+            val textoEmail = inputTextEmail.editText?.text.toString()
+            val textoSenha = inputTextSenha.editText?.text.toString()
+
+            if (!(textoEmail.isBlank()||textoSenha.isBlank())){
+                loginViewModel.buscaPorEmail(textoEmail)
+            } else {
+                configuraAlerta(inflatedView, "Os campos devem ser preenchidos")
+            }
         }
     }
 
     private fun configuraObserverLogin() {
         loginViewModel.liveDataUsuarioLogado.observe(viewLifecycleOwner, Observer { usuario ->
-            if(usuario != null){
-                if (textSenha == usuario.senha) {
-                    inputTextSenha.isErrorEnabled = false
+            if(usuario != null) {
+                val textoSenha = inputTextSenha.editText?.text.toString()
+                if (textoSenha == usuario.senha) {
                     fazLogin(usuario)
                 } else {
-                    inputTextSenha.error = "Senha ou email inválidos"
-                    inputTextSenha.isErrorEnabled = true
-                    Toast.makeText(context, "Senha incorreta", Toast.LENGTH_LONG).show()
+                    configuraAlerta(inflatedView, "A senha está incorreta")
                 }
-            } else Toast.makeText(context, "Usuario nulo", Toast.LENGTH_LONG).show()
+            } else {
+                configuraAlerta(inflatedView, "Email não encontrado")
+            }
         })
+    }
+
+    private fun configuraAlerta(view: View, alerta: String) {
+        val textAlerta = view.findViewById<TextView>(R.id.login_fragment_text_alerta_erro_login)
+        textAlerta.setText(alerta)
+        textAlerta.visibility = TextView.VISIBLE
     }
 
     private fun fazLogin(usuario: Usuario) {
@@ -115,9 +89,9 @@ class LoginFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun configuraCriarContaClickListener(view: View) {
+    private fun configuraCriarContaClickListener() {
         val buttonCriarConta =
-            view.findViewById<Button>(R.id.login_fragment_button_criar_conta)
+            inflatedView.findViewById<Button>(R.id.login_fragment_button_criar_conta)
         buttonCriarConta.setOnClickListener {
             activity?.let {
                 it.supportFragmentManager
@@ -127,10 +101,7 @@ class LoginFragment : Fragment() {
                     .commit()
             }
         }
-
     }
-
-
 }
 
 

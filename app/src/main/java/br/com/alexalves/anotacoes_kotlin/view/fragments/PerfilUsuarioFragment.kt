@@ -1,5 +1,7 @@
 package br.com.alexalves.anotacoes_kotlin.view.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -64,10 +66,25 @@ class PerfilUsuarioFragment : Fragment() {
     private fun configuraButtonLogout(view: View) {
         val buttonLogout = view.findViewById<Button>(R.id.perfil_fragment_button_logout)
         buttonLogout.setOnClickListener {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            intent.putExtra("appRun", true)
-            startActivity(intent)
+            iniciaAlertDialogLogout()
         }
+    }
+
+    private fun iniciaAlertDialogLogout() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Logout")
+            .setMessage("Tem certeza que deseja sair da conta?")
+            .setNegativeButton("Cancelar", DialogInterface.OnClickListener { dialog, which -> })
+            .setPositiveButton("Confirmar", DialogInterface.OnClickListener { dialog, which ->
+                logout()
+            })
+            .show()
+    }
+
+    private fun logout() {
+        val intent = Intent(context, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra("appRun", true)
+        startActivity(intent)
     }
 }

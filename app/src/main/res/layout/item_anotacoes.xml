@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="16dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
     app:cardBackgroundColor="#F8F6F6"
@@ -20,12 +20,25 @@
         <ImageView
             android:id="@+id/image_status_item"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             tools:src="@color/green"
             app:layout_constraintBottom_toTopOf="@id/text_titulo_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/image_text_status_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/image_status_item"
+            app:layout_constraintBottom_toBottomOf="@id/image_status_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="STATUS"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
 
         <TextView
             android:id="@+id/text_titulo_item"
