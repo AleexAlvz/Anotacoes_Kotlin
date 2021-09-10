@@ -13,14 +13,12 @@
         android:theme="@style/Theme.Anotacoes_Kotlin">
 
         <activity android:name=".view.activities.AnotacoesActivity" />
-
+        <activity android:name=".view.activities.DetalhesAnotacaoActivity"/>
         <activity android:name=".view.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
-
 </manifest>

@@ -13,16 +13,19 @@ import br.com.alexalves.anotacoes_kotlin.model.EnumStatus
 
 class AnotacoesAdapter(
     private val anotacoes: List<Anotacao>,
-    private val context: Context
-    ) : RecyclerView.Adapter<AnotacoesAdapter.ViewHolderAnotacao>() {
+    private val context: Context,
+    private val onItemClicked: (anotacao: Anotacao) -> Unit
+) : RecyclerView.Adapter<AnotacoesAdapter.ViewHolderAnotacao>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderAnotacao {
         val layout = LayoutInflater.from(context).inflate(R.layout.item_anotacoes, parent, false)
+        layout.setOnClickListener { onItemClicked }
         return ViewHolderAnotacao(layout)
     }
 
     override fun onBindViewHolder(holder: ViewHolderAnotacao, position: Int) {
-       holder.titulo.text = anotacoes[position].titulo
+        holder.itemView.setOnClickListener { onItemClicked(anotacoes[position]) }
+        holder.titulo.text = anotacoes[position].titulo
         holder.descricao.text = anotacoes[position].descricao
         setStatusImage(position, holder)
     }
@@ -51,7 +54,7 @@ class AnotacoesAdapter(
         return anotacoes.size
     }
 
-    class ViewHolderAnotacao(itemView: View): RecyclerView.ViewHolder(itemView){
+    class ViewHolderAnotacao(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titulo = itemView.findViewById<TextView>(R.id.text_titulo_item)
         val descricao = itemView.findViewById<TextView>(R.id.text_descricao_item)
         val statusImage = itemView.findViewById<ImageView>(R.id.image_status_item)
