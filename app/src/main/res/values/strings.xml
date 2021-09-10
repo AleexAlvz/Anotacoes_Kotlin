@@ -7,4 +7,5 @@
     <string name="button_edit_cadastro">Button para editar dados cadastrais</string>
     <string name="text_button_logout">Sair da conta</string>
     <string name="usuarioEmailArgument">usuarioEmailLogado</string>
+    <string name="anotacaoIdArgument">anotacaoId</string>
 </resources>

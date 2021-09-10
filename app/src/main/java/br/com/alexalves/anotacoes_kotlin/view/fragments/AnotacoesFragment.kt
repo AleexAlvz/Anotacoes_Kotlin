@@ -50,7 +50,7 @@ class AnotacoesFragment : Fragment() {
 
     private fun onItemClickListener(anotacao: Anotacao) {
         val intent = Intent(requireContext(), DetalhesAnotacaoActivity::class.java)
-        intent.putExtra("anotacaoId", anotacao.id)
+        intent.putExtra(getString(R.string.anotacaoIdArgument), anotacao.id)
         intent.putExtra(getString(R.string.usuarioEmailArgument), usuarioEmail)
         startActivity(intent)
     }
