@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class DetalheAnotacaoViewModel(private val anotacaoDAO: AnotacaoDAO): ViewModel() {
 
-    lateinit var anotacaoEscolhida: MutableLiveData<Anotacao>
+    var anotacaoEscolhida = MutableLiveData<Anotacao>()
 
     fun buscaAnotacaoPorId(anotacaoId: Long) {
         CoroutineScope(IO).launch {
@@ -22,5 +22,4 @@ class DetalheAnotacaoViewModel(private val anotacaoDAO: AnotacaoDAO): ViewModel(
             }
         }
     }
-
 }

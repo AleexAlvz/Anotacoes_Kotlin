@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import java.util.*
 
 class DetalheAnotacaoFragment : Fragment() {
 
+    private lateinit var inflatedView: View
     private lateinit var anotacaoIdString: String
     val detalheAnotacaoViewModel: DetalheAnotacaoViewModel by viewModel()
 
@@ -23,14 +25,19 @@ class DetalheAnotacaoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_detalhe_anotacao, container, false)
+        inflatedView = inflater.inflate(R.layout.fragment_detalhe_anotacao, container, false)
         anotacaoIdString = arguments?.get(getString(R.string.anotacaoIdArgument)).toString()
 
-        configuraObserverAnotacao(view)
-
+        configuraObserverAnotacao(inflatedView)
         detalheAnotacaoViewModel.buscaAnotacaoPorId(anotacaoIdString.toLong())
 
-        return view
+        configuraButtonVoltar(inflatedView)
+
+        return inflatedView
+    }
+
+    private fun configuraButtonVoltar(view: View) {
+        view.findViewById<TextView>(R.id.fragment_detalhe_button_voltar).setOnClickListener { activity?.finish() }
     }
 
     private fun configuraObserverAnotacao(view: View) {
@@ -38,8 +45,14 @@ class DetalheAnotacaoFragment : Fragment() {
             if (anotacao != null){
                 view.findViewById<TextView>(R.id.fragment_detalhe_text_input_titulo).setText(anotacao.titulo)
                 view.findViewById<TextView>(R.id.fragment_detalhe_text_input_descricao).setText(anotacao.descricao)
-                view.findViewById<TextView>(R.id.fragment_detalhe_text_input_data).setText(anotacao.dataCriacao.toString())
                 view.findViewById<TextView>(R.id.fragment_detalhe_text_input_status).setText(anotacao.status.toString())
+
+                //Formata data de criacao da anotacao
+                val day = anotacao.dataCriacao.get(Calendar.DAY_OF_MONTH)
+                val month = anotacao.dataCriacao.get(Calendar.MONTH)
+                val year = anotacao.dataCriacao.get(Calendar.YEAR)
+                val dataFormatada = "$day/$month/$year"
+                view.findViewById<TextView>(R.id.fragment_detalhe_text_input_data).setText(dataFormatada)
             }
         })
     }
