@@ -15,10 +15,10 @@ import java.util.*
 
 data class Anotacao(
     val emailUsuario: String,
-    val titulo: String,
-    val descricao: String,
+    var titulo: String,
+    var descricao: String,
     val dataCriacao: Calendar,
-    val status: EnumStatus,
+    var status: EnumStatus,
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0
 )

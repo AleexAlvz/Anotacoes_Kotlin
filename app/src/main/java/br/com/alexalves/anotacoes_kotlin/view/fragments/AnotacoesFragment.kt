@@ -41,7 +41,8 @@ class AnotacoesFragment : Fragment() {
 
     private fun configuraObserverAnotacoes() {
         anotacoesViewModel.anotacoesPorUsuario.observe(viewLifecycleOwner, Observer { anotacoes ->
-            val adapter = AnotacoesAdapter(anotacoes, requireContext(), this::onItemClickListener)
+            val sortedList = anotacoes.sortedWith(compareBy({ it.dataCriacao.timeInMillis })).reversed()
+            val adapter = AnotacoesAdapter(sortedList, requireContext(), this::onItemClickListener)
             adapter.notifyDataSetChanged()
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = adapter
@@ -52,6 +53,7 @@ class AnotacoesFragment : Fragment() {
         val intent = Intent(requireContext(), DetalhesAnotacaoActivity::class.java)
         intent.putExtra(getString(R.string.anotacaoIdArgument), anotacao.id)
         intent.putExtra(getString(R.string.usuarioEmailArgument), usuarioEmail)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
 }

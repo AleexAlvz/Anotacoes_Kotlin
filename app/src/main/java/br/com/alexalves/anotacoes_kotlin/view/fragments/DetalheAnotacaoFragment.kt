@@ -19,6 +19,8 @@ class DetalheAnotacaoFragment : Fragment() {
     private lateinit var inflatedView: View
     private lateinit var anotacaoIdString: String
     val detalheAnotacaoViewModel: DetalheAnotacaoViewModel by viewModel()
+    var listenerEditAnotacaoButton: (()->Unit)? = null
+    var listenerVoltarParaAnotacoesFragment: (()->Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,12 +34,20 @@ class DetalheAnotacaoFragment : Fragment() {
         detalheAnotacaoViewModel.buscaAnotacaoPorId(anotacaoIdString.toLong())
 
         configuraButtonVoltar(inflatedView)
+        configuraButtonEditarAnotacao(inflatedView)
 
         return inflatedView
     }
 
+    private fun configuraButtonEditarAnotacao(view: View) {
+        view.findViewById<TextView>(R.id.fragment_detalhe_button_editar).setOnClickListener {
+            listenerEditAnotacaoButton?.invoke()
+        }
+
+    }
+
     private fun configuraButtonVoltar(view: View) {
-        view.findViewById<TextView>(R.id.fragment_detalhe_button_voltar).setOnClickListener { activity?.finish() }
+        view.findViewById<TextView>(R.id.fragment_detalhe_button_voltar).setOnClickListener { listenerVoltarParaAnotacoesFragment?.invoke() }
     }
 
     private fun configuraObserverAnotacao(view: View) {
@@ -56,5 +66,4 @@ class DetalheAnotacaoFragment : Fragment() {
             }
         })
     }
-
 }

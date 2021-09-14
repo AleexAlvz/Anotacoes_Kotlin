@@ -58,6 +58,5 @@ class AnotacoesActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.anotacoes_fragment_container, fragment, null)
             .commit()
-
     }
 }
